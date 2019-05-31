@@ -1,0 +1,49 @@
+members:
+*organization, customer
+
+Assets:
+* employee
+
+transactions:
+* add
+* update
+
+transaction add{
+  o String detail
+  --> Organization organization
+  --> Customer customer
+
+}
+
+transaction update{
+  o String detail
+  --> Organization organization
+  --> Customer customer
+}
+
+
+
+
+
+function add(request){
+
+	//inbound customer information is going to placed into request customer organization
+
+	request.customer.organization = request.organization;
+
+	//created x date time stamp with the date right now
+
+	request.customer.created = new Date().toISOString();
+
+	//updating the status request
+
+	request.customer.status = "request submitted";
+
+	// go get the acid registry for request from my network when this function returns it will return an object and which asset reg root registry for orders.
+	// update this request in the asset registry, done creating the request
+
+	return getAssetRegistry('accredilink.employee.biznet.SampleAsset');
+		.then(function (assetRegistry {
+			return assetRegistry.update(request.customer);
+		});
+}
